@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediGrowth AI | Australian Healthcare Intelligence & Growth Automation Platform</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+            },
+            navy: {
+              800: '#1e293b',
+              900: '#0f172a',
+              950: '#020617',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    .glass-card {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-modal {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col custom-scrollbar">
+
+  <!-- TOP NAVIGATION HEADER -->
+  <header class="sticky top-0 z-40 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+          <i data-lucide="activity" class="w-6 h-6 text-slate-950"></i>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">MediGrowth AI</span>
+            <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Aus Edition</span>
+          </div>
+          <p class="text-xs text-slate-400 hidden sm:block">Healthcare Lead Intelligence & Automated Growth Engine</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-3">
+        <span class="text-xs px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 border border-slate-700/50 hidden md:inline-flex items-center">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse mr-2"></span>
+          AI Agent Ready
+        </span>
+        <a href="/api/export-csv" class="inline-flex items-center px-3.5 py-2 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition shadow-sm">
+          <i data-lucide="download" class="w-4 h-4 mr-1.5 text-emerald-400"></i>
+          Export CSV Leads
+        </a>
+        <button onclick="switchTab('scraper')" class="inline-flex items-center px-3.5 py-2 rounded-lg text-xs font-medium bg-emerald-600 hover:bg-emerald-500 text-white font-semibold transition shadow-md shadow-emerald-600/20">
+          <i data-lucide="plus-circle" class="w-4 h-4 mr-1.5"></i>
+          Scrape New Lead
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN WRAPPER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- HERO / CANDIDATE BANNER -->
+    <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900/90 to-emerald-950/40 border border-slate-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div class="space-y-1">
+        <div class="flex items-center space-x-2">
+          <span class="px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 rounded">Practical Assessment Project</span>
+          <span class="text-xs text-slate-400">AI Growth & Automation Associate (WFH)</span>
+        </div>
+        <h1 class="text-lg sm:text-xl font-bold text-white">Australian GP Directory Intelligence & AI-Powered Outbound Growth Engine</h1>
+        <p class="text-xs sm:text-sm text-slate-300 max-w-3xl">
+          Designed to automate the discovery of Australian General Practitioners, diagnose practice automation bottlenecks (HotDoc/HealthEngine fees, phone triage, no-shows), and generate AHPRA-compliant, high-converting B2B outreach campaigns in seconds.
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-2 shrink-0">
+        <button onclick="switchTab('promptlab')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-200 border border-indigo-500/40 flex items-center">
+          <i data-lucide="terminal" class="w-3.5 h-3.5 mr-1.5"></i>
+          Prompt Lab
+        </button>
+        <button onclick="switchTab('pipeline')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 flex items-center">
+          <i data-lucide="workflow" class="w-3.5 h-3.5 mr-1.5"></i>
+          Workflow Architecture
+        </button>
+      </div>
+    </div>
+
+    <!-- METRICS OVERVIEW -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4" id="statsContainer">
+      <div class="glass-card p-4 rounded-xl">
+        <div class="flex items-center justify-between text-slate-400 text-xs mb-1">
+          <span>Verified Australian Practices</span>
+          <i data-lucide="building" class="w-4 h-4 text-emerald-400"></i>
+        </div>
+        <div class="text-2xl font-extrabold text-white" id="statClinics">17</div>
+        <div class="text-[11px] text-emerald-400 flex items-center mt-1">
+          <i data-lucide="check-circle" class="w-3 h-3 mr-1"></i> Public AHPRA/RACGP aligned
+        </div>
+      </div>
+      <div class="glass-card p-4 rounded-xl">
+        <div class="flex items-center justify-between text-slate-400 text-xs mb-1">
+          <span>Doctors & GPs Indexed</span>
+          <i data-lucide="user-check" class="w-4 h-4 text-cyan-400"></i>
+        </div>
+        <div class="text-2xl font-extrabold text-white" id="statDoctors">48</div>
+        <div class="text-[11px] text-slate-400 flex items-center mt-1">
+          <span>Principal GPs & Associates</span>
+        </div>
+      </div>
+      <div class="glass-card p-4 rounded-xl">
+        <div class="flex items-center justify-between text-slate-400 text-xs mb-1">
+          <span>Telehealth Integration Rate</span>
+          <i data-lucide="video" class="w-4 h-4 text-indigo-400"></i>
+        </div>
+        <div class="text-2xl font-extrabold text-white" id="statTelehealth">88.2%</div>
+        <div class="text-[11px] text-indigo-300 flex items-center mt-1">
+          <span>Remote consult ready</span>
+        </div>
+      </div>
+      <div class="glass-card p-4 rounded-xl">
+        <div class="flex items-center justify-between text-slate-400 text-xs mb-1">
+          <span>Avg Automation Readiness</span>
+          <i data-lucide="zap" class="w-4 h-4 text-amber-400"></i>
+        </div>
+        <div class="text-2xl font-extrabold text-white" id="statScore">68.4 / 100</div>
+        <div class="text-[11px] text-amber-300 flex items-center mt-1">
+          <span>Growth opportunity index</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAVIGATION TABS -->
+    <div class="flex border-b border-slate-800 space-x-1 sm:space-x-2 overflow-x-auto pb-0.5">
+      <button onclick="switchTab('directory')" id="tabBtnDirectory" class="px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-t-lg transition border-b-2 border-emerald-500 text-emerald-400 bg-slate-900/60 flex items-center">
+        <i data-lucide="database" class="w-4 h-4 mr-2"></i>
+        Lead Intelligence Directory
+      </button>
+      <button onclick="switchTab('scraper')" id="tabBtnScraper" class="px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-t-lg transition border-b-2 border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-900/30 flex items-center">
+        <i data-lucide="scan" class="w-4 h-4 mr-2"></i>
+        Live AI Scraper Sandbox
+      </button>
+      <button onclick="switchTab('pipeline')" id="tabBtnPipeline" class="px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-t-lg transition border-b-2 border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-900/30 flex items-center">
+        <i data-lucide="git-merge" class="w-4 h-4 mr-2"></i>
+        Automation Pipeline Architecture
+      </button>
+      <button onclick="switchTab('promptlab')" id="tabBtnPromptlab" class="px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-t-lg transition border-b-2 border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-900/30 flex items-center">
+        <i data-lucide="cpu" class="w-4 h-4 mr-2"></i>
+        Prompt Engineering Dossier
+      </button>
+    </div>
+
+    <!-- TAB 1: LEAD DIRECTORY -->
+    <div id="tabContentDirectory" class="space-y-4">
+
+      <!-- FILTER CONTROLS -->
+      <div class="glass-card p-4 rounded-xl flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+          <!-- Search Input -->
+          <div class="relative w-full sm:w-64">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+            <input type="text" id="filterSearch" oninput="applyFilters()" placeholder="Search practice, doctor, suburb..." class="w-full bg-slate-900 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500">
+          </div>
+
+          <!-- State Filter -->
+          <select id="filterState" onchange="applyFilters()" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-emerald-500">
+            <option value="ALL">All States (Aus)</option>
+            <option value="NSW">NSW (Sydney)</option>
+            <option value="VIC">VIC (Melbourne)</option>
+            <option value="QLD">QLD (Brisbane)</option>
+            <option value="WA">WA (Perth)</option>
+            <option value="SA">SA (Adelaide)</option>
+            <option value="TAS">TAS (Hobart)</option>
+            <option value="ACT">ACT (Canberra)</option>
+          </select>
+
+          <!-- Booking System Filter -->
+          <select id="filterBooking" onchange="applyFilters()" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-emerald-500">
+            <option value="ALL">All Booking Engines</option>
+            <option value="HotDoc">HotDoc</option>
+            <option value="HealthEngine">HealthEngine</option>
+            <option value="Custom Web Portal">Custom Portal</option>
+            <option value="Phone Only">Phone Only</option>
+          </select>
+
+          <!-- Telehealth Filter -->
+          <select id="filterTelehealth" onchange="applyFilters()" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-emerald-500">
+            <option value="ALL">Telehealth: Any</option>
+            <option value="true">Telehealth: Yes</option>
+            <option value="false">Telehealth: No</option>
+          </select>
+
+          <!-- Billing Type Filter -->
+          <select id="filterBilling" onchange="applyFilters()" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-200 focus:outline-none focus:border-emerald-500">
+            <option value="ALL">All Billing Models</option>
+            <option value="Bulk Billing">Bulk Billing</option>
+            <option value="Mixed Billing">Mixed Billing</option>
+            <option value="Private Billing">Private Billing</option>
+          </select>
+        </div>
+
+        <div class="text-slate-400 text-xs w-full lg:w-auto flex justify-between lg:justify-end items-center gap-2">
+          <span id="resultCountBadge" class="font-semibold text-emerald-400">17 Practices Found</span>
+          <button onclick="resetFilters()" class="text-slate-400 hover:text-white underline text-[11px]">Reset</button>
+        </div>
+      </div>
+
+      <!-- CLINICS GRID / CARDS -->
+      <div id="clinicsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Dynamically rendered via JavaScript -->
+      </div>
+    </div>
+
+    <!-- TAB 2: LIVE AI SCRAPER SANDBOX -->
+    <div id="tabContentScraper" class="hidden space-y-5">
+      <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-4">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+            <i data-lucide="scan-line" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h2 class="text-lg font-bold text-white">Live Web Scraping & AI Entity Extraction Sandbox</h2>
+            <p class="text-xs text-slate-400">Demonstrates real-time web scraping and structured parsing on Australian medical websites or raw HTML.</p>
+          </div>
+        </div>
+
+        <div class="space-y-3 pt-2">
+          <label class="block text-xs font-semibold uppercase text-slate-300">Method 1: Enter Public Australian Clinic URL</label>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input type="text" id="scrapeUrlInput" placeholder="https://www.example-medical-centre.com.au" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-emerald-500">
+            <button onclick="runLiveScrape('url')" id="btnScrapeUrl" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs rounded-xl transition flex items-center justify-center">
+              <i data-lucide="globe" class="w-4 h-4 mr-2"></i>
+              Scrape & Extract URL
+            </button>
+          </div>
+
+          <div class="relative flex py-2 items-center">
+            <div class="flex-grow border-t border-slate-800"></div>
+            <span class="flex-shrink mx-4 text-xs font-semibold text-slate-500 uppercase">Or</span>
+            <div class="flex-grow border-t border-slate-800"></div>
+          </div>
+
+          <label class="block text-xs font-semibold uppercase text-slate-300">Method 2: Paste Raw Clinic HTML / Text Content</label>
+          <textarea id="scrapeTextInput" rows="4" placeholder="Paste doctor bio, clinic homepage excerpt, or HTML here (e.g. 'Dr. Amanda Chen MBBS FRACGP at North Sydney Family Medical. Call (02) 9922 4500 or email reception@northsydneymedical.com.au. Book online via HotDoc')..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:border-emerald-500 font-mono"></textarea>
+          
+          <div class="flex justify-between items-center">
+            <button onclick="loadSampleText()" class="text-xs text-indigo-400 hover:underline">Insert Sample Australian Practice Snippet</button>
+            <button onclick="runLiveScrape('text')" id="btnScrapeText" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded-xl transition flex items-center">
+              <i data-lucide="cpu" class="w-4 h-4 mr-2"></i>
+              Run AI Entity Parser
+            </button>
+          </div>
+        </div>
+
+        <!-- SCRAPED RESULT CONTAINER -->
+        <div id="scrapeResultBox" class="hidden mt-4 pt-4 border-t border-slate-800">
+          <div class="p-4 rounded-xl bg-slate-900/90 border border-emerald-500/40 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-emerald-400 flex items-center">
+                <i data-lucide="check-circle" class="w-4 h-4 mr-1.5"></i> Successfully Extracted & Added to Active Database
+              </span>
+              <button onclick="switchTab('directory')" class="text-xs text-slate-300 hover:text-white underline">View in Lead Directory &rarr;</button>
+            </div>
+            <pre id="scrapeResultJson" class="text-xs font-mono text-slate-300 overflow-x-auto bg-slate-950 p-3 rounded-lg border border-slate-800"></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: PIPELINE ARCHITECTURE -->
+    <div id="tabContentPipeline" class="hidden space-y-5">
+      <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-6">
+        <div>
+          <h2 class="text-xl font-bold text-white">AI Growth & Automation Pipeline Architecture</h2>
+          <p class="text-xs text-slate-400">How the multi-agent system transforms unstructured public web data into verified leads and high-converting B2B outreach.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+          <!-- Step 1 -->
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+            <div class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 font-bold text-xs flex items-center justify-center">01</div>
+            <h3 class="text-xs font-bold text-slate-200">Public Discovery & Ingestion</h3>
+            <p class="text-[11px] text-slate-400">Scrapes Australian medical directories (Healthdirect, YellowPages AU, Google Maps) with custom User-Agent and anti-blocking headers.</p>
+          </div>
+          <!-- Step 2 -->
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+            <div class="w-7 h-7 rounded-lg bg-cyan-500/20 text-cyan-400 font-bold text-xs flex items-center justify-center">02</div>
+            <h3 class="text-xs font-bold text-slate-200">AI Entity Extraction</h3>
+            <p class="text-[11px] text-slate-400">Regex + LLM structured JSON prompt parses Principal GP name, FRACGP credentials, Australian phone numbers, and booking platform tags.</p>
+          </div>
+          <!-- Step 3 -->
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+            <div class="w-7 h-7 rounded-lg bg-indigo-500/20 text-indigo-400 font-bold text-xs flex items-center justify-center">03</div>
+            <h3 class="text-xs font-bold text-slate-200">Bottleneck Diagnosis</h3>
+            <p class="text-[11px] text-slate-400">Calculates Automation Readiness Score (0-100) based on HotDoc marketplace fee leakage, phone-only barriers, and lack of telehealth.</p>
+          </div>
+          <!-- Step 4 -->
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+            <div class="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-400 font-bold text-xs flex items-center justify-center">04</div>
+            <h3 class="text-xs font-bold text-slate-200">Few-Shot Copy Synthesis</h3>
+            <p class="text-[11px] text-slate-400">Generates 4 personalized outreach assets (Cold Email, LinkedIn InMail, Receptionist Phone Script, 3-Pillar Audit Roadmap).</p>
+          </div>
+          <!-- Step 5 -->
+          <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
+            <div class="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 font-bold text-xs flex items-center justify-center">05</div>
+            <h3 class="text-xs font-bold text-slate-200">CRM Dispatch & Sync</h3>
+            <p class="text-[11px] text-slate-400">Exports enriched records to CSV / JSON ready for HubSpot, Apollo, or webhook automation to smart follow-up sequences.</p>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-300 space-y-2">
+          <h4 class="font-bold text-white flex items-center">
+            <i data-lucide="shield-check" class="w-4 h-4 mr-2 text-emerald-400"></i>
+            Australian Healthcare Compliance Guardrails
+          </h4>
+          <p class="text-slate-400">
+            Australian medical practices operate under strict AHPRA (Australian Health Practitioner Regulation Agency) guidelines. Our prompt engine prevents unlawful claims (e.g. no "guaranteed patients", no fake patient reviews) and focuses exclusively on <strong class="text-slate-200">administrative efficiency, no-show reduction, and staff burnout mitigation</strong>.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: PROMPT ENGINEERING LAB -->
+    <div id="tabContentPromptlab" class="hidden space-y-5">
+      <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-6">
+        <div>
+          <h2 class="text-xl font-bold text-white">Prompt Engineering Evolution & Iteration Dossier</h2>
+          <p class="text-xs text-slate-400">How prompts were designed, systematically tested, and refined from naive V1 to production-grade V3.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- V1 -->
+          <div class="p-4 rounded-xl bg-red-950/20 border border-red-500/30 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-red-400">Prompt V1: Naive Approach</span>
+              <span class="text-[10px] bg-red-500/20 text-red-300 px-2 py-0.5 rounded">Failed in Testing</span>
+            </div>
+            <pre class="text-[11px] font-mono text-slate-300 bg-slate-950 p-3 rounded-lg border border-slate-900 overflow-x-auto whitespace-pre-wrap">"Write a cold email to Dr. Sarah at a Sydney clinic selling automation software. Tell her we can get more patients."</pre>
+            <div class="text-[11px] text-red-300 space-y-1">
+              <p>❌ <strong>Critical Flaws:</strong></p>
+              <ul class="list-disc pl-4 space-y-0.5 text-slate-400">
+                <li>Violated AHPRA advertising compliance.</li>
+                <li>Sounded like generic, aggressive American spam.</li>
+                <li>Zero mention of clinical PMS software (Best Practice, MedicalDirector).</li>
+                <li>No structured output or follow-up sequence.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- V2 -->
+          <div class="p-4 rounded-xl bg-amber-950/20 border border-amber-500/30 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-amber-400">Prompt V2: Contextualized</span>
+              <span class="text-[10px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded">Better, Inconsistent</span>
+            </div>
+            <pre class="text-[11px] font-mono text-slate-300 bg-slate-950 p-3 rounded-lg border border-slate-900 overflow-x-auto whitespace-pre-wrap">"You are an Australian healthcare marketing assistant. Write a professional email to Dr. Sarah Henderson at Sydney Central Medical. Mention that she uses HotDoc and Best Practice. Offer to reduce receptionist phone calls."</pre>
+            <div class="text-[11px] text-amber-300 space-y-1">
+              <p>⚠️ <strong>Improvements & Limitations:</strong></p>
+              <ul class="list-disc pl-4 space-y-0.5 text-slate-400">
+                <li>Improved Australian tone and correct doctor salutation.</li>
+                <li>Still generated non-standardized conversational preamble.</li>
+                <li>Lacked multi-channel assets (no LinkedIn or phone script).</li>
+                <li>No JSON schema constraint for programmatic CRM injection.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- V3 -->
+          <div class="p-4 rounded-xl bg-emerald-950/20 border border-emerald-500/40 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-emerald-400">Prompt V3: Production Schema</span>
+              <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">Production Grade</span>
+            </div>
+            <pre class="text-[11px] font-mono text-slate-300 bg-slate-950 p-3 rounded-lg border border-slate-900 overflow-x-auto whitespace-pre-wrap">"System Prompt: Elite B2B Healthcare Growth Strategist (Australian market). 
+Few-Shot Examples + Strict JSON Schema:
+{
+  cold_email: {subject, preview, body},
+  linkedin_message: {recipient, headline, message},
+  phone_script: {target, duration, script},
+  audit_roadmap: [{pillar, recommendation, roi}]
+}
+Guardrails: Strict AHPRA compliance, zero conversational fluff, localized phone and postcode patterns."</pre>
+            <div class="text-[11px] text-emerald-300 space-y-1">
+              <p>✅ <strong>Production Advantages:</strong></p>
+              <ul class="list-disc pl-4 space-y-0.5 text-slate-400">
+                <li>100% JSON Schema compliance with deterministic fallbacks.</li>
+                <li>Multi-channel campaign ready for automated dispatch.</li>
+                <li>Specific Medicare item & PMS software awareness.</li>
+                <li>AHPRA compliance verified.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- AI CAMPAIGN GENERATOR MODAL -->
+  <div id="campaignModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+    <div class="glass-modal w-full max-w-4xl max-h-[90vh] rounded-2xl overflow-hidden flex flex-col border border-slate-700 shadow-2xl">
+      <!-- Modal Header -->
+      <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/60">
+        <div class="flex items-center space-x-3">
+          <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-white" id="modalPracticeName">Sydney Central Medical Centre</h3>
+            <p class="text-xs text-slate-400" id="modalDoctorSub">Target: Dr. Sarah Henderson • Sydney NSW</p>
+          </div>
+        </div>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Modal Tabs -->
+      <div class="px-6 pt-3 border-b border-slate-800 bg-slate-950/50 flex space-x-4 text-xs font-semibold">
+        <button onclick="switchModalTab('email')" id="mTabEmail" class="pb-2.5 border-b-2 border-emerald-500 text-emerald-400 flex items-center">
+          <i data-lucide="mail" class="w-3.5 h-3.5 mr-1.5"></i> Cold Email Sequence
+        </button>
+        <button onclick="switchModalTab('linkedin')" id="mTabLinkedin" class="pb-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center">
+          <i data-lucide="linkedin" class="w-3.5 h-3.5 mr-1.5"></i> LinkedIn InMail
+        </button>
+        <button onclick="switchModalTab('phone')" id="mTabPhone" class="pb-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center">
+          <i data-lucide="phone-call" class="w-3.5 h-3.5 mr-1.5"></i> Gatekeeper Phone Script
+        </button>
+        <button onclick="switchModalTab('audit')" id="mTabAudit" class="pb-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center">
+          <i data-lucide="file-check-2" class="w-3.5 h-3.5 mr-1.5"></i> 3-Pillar Practice Audit
+        </button>
+      </div>
+
+      <!-- Modal Content Body -->
+      <div class="p-6 overflow-y-auto flex-1 space-y-4 custom-scrollbar text-xs">
+        
+        <!-- EMAIL TAB -->
+        <div id="mContentEmail" class="space-y-3">
+          <div class="p-3 rounded-lg bg-slate-900 border border-slate-800 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-slate-400 font-medium">Subject Line:</span>
+              <button onclick="copyToClipboard('emailSubject')" class="text-emerald-400 hover:text-emerald-300 text-[11px] flex items-center">
+                <i data-lucide="copy" class="w-3 h-3 mr-1"></i> Copy Subject
+              </button>
+            </div>
+            <p id="emailSubject" class="font-bold text-slate-200"></p>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+              <span class="text-slate-400">Personalized Body:</span>
+              <button onclick="copyToClipboard('emailBody')" class="text-emerald-400 hover:text-emerald-300 text-[11px] flex items-center font-semibold">
+                <i data-lucide="copy" class="w-3.5 h-3.5 mr-1"></i> Copy Email
+              </button>
+            </div>
+            <pre id="emailBody" class="font-sans text-xs text-slate-200 whitespace-pre-wrap leading-relaxed"></pre>
+          </div>
+        </div>
+
+        <!-- LINKEDIN TAB -->
+        <div id="mContentLinkedin" class="hidden space-y-3">
+          <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+              <span class="text-slate-400 font-semibold" id="linkedinRole">Practice Principal / Business Manager</span>
+              <button onclick="copyToClipboard('linkedinBody')" class="text-emerald-400 hover:text-emerald-300 text-[11px] flex items-center font-semibold">
+                <i data-lucide="copy" class="w-3.5 h-3.5 mr-1"></i> Copy InMail
+              </button>
+            </div>
+            <pre id="linkedinBody" class="font-sans text-xs text-slate-200 whitespace-pre-wrap leading-relaxed"></pre>
+          </div>
+        </div>
+
+        <!-- PHONE TAB -->
+        <div id="mContentPhone" class="hidden space-y-3">
+          <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+              <span class="text-slate-400 font-semibold">Receptionist / Gatekeeper 60s Script</span>
+              <button onclick="copyToClipboard('phoneBody')" class="text-emerald-400 hover:text-emerald-300 text-[11px] flex items-center font-semibold">
+                <i data-lucide="copy" class="w-3.5 h-3.5 mr-1"></i> Copy Script
+              </button>
+            </div>
+            <pre id="phoneBody" class="font-sans text-xs text-slate-200 whitespace-pre-wrap leading-relaxed"></pre>
+          </div>
+        </div>
+
+        <!-- AUDIT TAB -->
+        <div id="mContentAudit" class="hidden space-y-3">
+          <div id="auditRoadmapList" class="space-y-3">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-6 py-3.5 border-t border-slate-800 bg-slate-900/80 flex items-center justify-between">
+        <span class="text-[11px] text-slate-400">Generated by MediGrowth PromptEngine v3.2 • AHPRA Compliant</span>
+        <div class="flex items-center space-x-2">
+          <button onclick="downloadCampaignJson()" class="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 flex items-center">
+            <i data-lucide="download" class="w-3.5 h-3.5 mr-1.5 text-emerald-400"></i>
+            Export JSON
+          </button>
+          <button onclick="closeModal()" class="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition">
+            Done
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden px-4 py-2.5 rounded-xl bg-emerald-600 text-white text-xs font-semibold shadow-2xl flex items-center space-x-2">
+    <i data-lucide="check" class="w-4 h-4"></i>
+    <span id="toastMsg">Copied to clipboard!</span>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    let allClinics = [];
+    let currentCampaign = null;
+
+    // Initialize on load
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+      fetchStats();
+      fetchClinics();
+    });
+
+    // Switch Main Tabs
+    function switchTab(tabId) {
+      const tabs = ['directory', 'scraper', 'pipeline', 'promptlab'];
+      tabs.forEach(t => {
+        const btn = document.getElementById('tabBtn' + capitalize(t));
+        const content = document.getElementById('tabContent' + capitalize(t));
+        if (t === tabId) {
+          btn.className = "px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-t-lg transition border-b-2 border-emerald-500 text-emerald-400 bg-slate-900/60 flex items-center";
+          content.classList.remove('hidden');
+        } else {
+          btn.className = "px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-t-lg transition border-b-2 border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-900/30 flex items-center";
+          content.classList.add('hidden');
+        }
+      });
+      lucide.createIcons();
+    }
+
+    function capitalize(s) {
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    }
+
+    // Fetch Stats
+    async function fetchStats() {
+      try {
+        const res = await fetch('/api/stats');
+        const data = await res.json();
+        document.getElementById('statClinics').textContent = data.total_clinics;
+        document.getElementById('statDoctors').textContent = data.total_doctors;
+        document.getElementById('statTelehealth').textContent = data.telehealth_rate + '%';
+        document.getElementById('statScore').textContent = data.avg_automation_score + ' / 100';
+      } catch (e) {
+        console.error("Failed to fetch stats", e);
+      }
+    }
+
+    // Fetch Clinics
+    async function fetchClinics() {
+      try {
+        const res = await fetch('/api/clinics');
+        allClinics = await res.json();
+        renderClinics(allClinics);
+      } catch (e) {
+        console.error("Failed to fetch clinics", e);
+      }
+    }
+
+    // Apply Filters
+    async function applyFilters() {
+      const search = document.getElementById('filterSearch').value;
+      const state = document.getElementById('filterState').value;
+      const booking = document.getElementById('filterBooking').value;
+      const telehealth = document.getElementById('filterTelehealth').value;
+      const billing = document.getElementById('filterBilling').value;
+
+      const params = new URLSearchParams({
+        search: search,
+        state: state,
+        booking_system: booking,
+        telehealth: telehealth,
+        billing_type: billing
+      });
+
+      try {
+        const res = await fetch('/api/clinics?' + params.toString());
+        const filtered = await res.json();
+        renderClinics(filtered);
+      } catch (e) {
+        console.error("Filter failed", e);
+      }
+    }
+
+    function resetFilters() {
+      document.getElementById('filterSearch').value = '';
+      document.getElementById('filterState').value = 'ALL';
+      document.getElementById('filterBooking').value = 'ALL';
+      document.getElementById('filterTelehealth').value = 'ALL';
+      document.getElementById('filterBilling').value = 'ALL';
+      applyFilters();
+    }
+
+    // Render Clinics Grid
+    function renderClinics(clinics) {
+      const container = document.getElementById('clinicsGrid');
+      const badge = document.getElementById('resultCountBadge');
+      badge.textContent = `${clinics.length} Practices Found`;
+
+      if (clinics.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-12 text-center text-slate-400 glass-card rounded-2xl">
+            <i data-lucide="search-x" class="w-8 h-8 mx-auto text-slate-500 mb-2"></i>
+            <p class="font-medium text-sm">No Australian practices match your current filter combination.</p>
+            <button onclick="resetFilters()" class="mt-2 text-xs text-emerald-400 underline">Reset all filters</button>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      container.innerHTML = clinics.map(c => {
+        const bookingClass = c.booking_system === 'HotDoc' ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30' :
+                             c.booking_system === 'HealthEngine' ? 'bg-purple-500/10 text-purple-400 border-purple-500/30' :
+                             c.booking_system === 'Phone Only' ? 'bg-rose-500/10 text-rose-400 border-rose-500/30' :
+                             'bg-emerald-500/10 text-emerald-400 border-emerald-500/30';
+        
+        return `
+          <div class="glass-card rounded-2xl p-5 border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition space-y-4">
+            <div class="space-y-3">
+              <!-- Top Row Badges -->
+              <div class="flex items-center justify-between text-[11px]">
+                <span class="px-2 py-0.5 rounded-full font-semibold border ${bookingClass}">
+                  ${c.booking_system}
+                </span>
+                <span class="px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 font-mono font-medium">
+                  ${c.state} • ${c.postcode}
+                </span>
+              </div>
+
+              <!-- Title & Location -->
+              <div>
+                <h3 class="text-base font-bold text-white tracking-tight">${c.practice_name}</h3>
+                <p class="text-xs text-slate-400 flex items-center mt-0.5">
+                  <i data-lucide="map-pin" class="w-3 h-3 mr-1 text-slate-500"></i>
+                  ${c.suburb}, ${c.state}
+                </p>
+              </div>
+
+              <!-- Doctor Details -->
+              <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800/80 space-y-1">
+                <div class="text-[11px] text-slate-400 flex items-center font-medium">
+                  <i data-lucide="stethoscope" class="w-3 h-3 mr-1 text-emerald-400"></i>
+                  Principal GP:
+                </div>
+                <div class="text-xs font-semibold text-slate-200 truncate">${c.principal_gp}</div>
+                <div class="text-[10px] text-slate-400">PMS: <span class="text-slate-300 font-medium">${c.pms_software || 'Best Practice'}</span></div>
+              </div>
+
+              <!-- Contact Info -->
+              <div class="space-y-1 text-xs text-slate-300">
+                <div class="flex items-center text-slate-300">
+                  <i data-lucide="phone" class="w-3 h-3 mr-2 text-slate-500"></i>
+                  <span>${c.phone}</span>
+                </div>
+                <div class="flex items-center text-slate-400 truncate">
+                  <i data-lucide="mail" class="w-3 h-3 mr-2 text-slate-500"></i>
+                  <span class="truncate">${c.email}</span>
+                </div>
+              </div>
+
+              <!-- Bottleneck Snippet -->
+              <div class="text-[11px] text-amber-300/90 bg-amber-500/10 p-2 rounded-lg border border-amber-500/20 line-clamp-2">
+                <span class="font-bold text-amber-400">Bottleneck:</span> ${c.key_bottlenecks ? c.key_bottlenecks[0] : 'Manual phone triage'}
+              </div>
+            </div>
+
+            <!-- Action Button -->
+            <button onclick="openCampaignModal('${c.id}')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-xs transition shadow-lg shadow-emerald-600/20 flex items-center justify-center">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 mr-1.5"></i>
+              Generate AI Growth Outreach
+            </button>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    // Open Campaign Modal
+    async function openCampaignModal(clinicId) {
+      const modal = document.getElementById('campaignModal');
+      modal.classList.remove('hidden');
+
+      // Set temporary loading state
+      document.getElementById('modalPracticeName').textContent = "Synthesizing AI Growth Campaign...";
+      document.getElementById('modalDoctorSub').textContent = "Analyzing practice bottlenecks & Australian Medicare workflows...";
+      document.getElementById('emailSubject').textContent = "Generating...";
+      document.getElementById('emailBody').textContent = "Loading personalized outreach sequence...";
+
+      try {
+        const res = await fetch('/api/generate-campaign', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ clinic_id: clinicId })
+        });
+        const campaign = await res.json();
+        currentCampaign = campaign;
+
+        document.getElementById('modalPracticeName').textContent = campaign.practice_name;
+        document.getElementById('modalDoctorSub').textContent = `Target: ${campaign.principal_gp} • ${campaign.suburb}, ${campaign.state}`;
+
+        // Populate Email
+        document.getElementById('emailSubject').textContent = campaign.cold_email.subject;
+        document.getElementById('emailBody').textContent = campaign.cold_email.body;
+
+        // Populate LinkedIn
+        document.getElementById('linkedinRole').textContent = campaign.linkedin_message.recipient_role;
+        document.getElementById('linkedinBody').textContent = campaign.linkedin_message.message;
+
+        // Populate Phone
+        document.getElementById('phoneBody').textContent = campaign.phone_script.script;
+
+        // Populate Audit Roadmap
+        const auditContainer = document.getElementById('auditRoadmapList');
+        auditContainer.innerHTML = campaign.audit_roadmap.map(item => `
+          <div class="p-3.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-emerald-400">${item.pillar}</span>
+              <span class="text-[10px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded font-mono">${item.current_state}</span>
+            </div>
+            <p class="text-xs text-slate-200">${item.recommendation}</p>
+            <div class="text-[11px] text-cyan-300 font-medium">💡 Projected Impact: ${item.projected_impact}</div>
+          </div>
+        `).join('');
+
+        switchModalTab('email');
+        lucide.createIcons();
+      } catch (e) {
+        console.error("Failed to generate campaign", e);
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('campaignModal').classList.add('hidden');
+    }
+
+    // Modal Subtabs
+    function switchModalTab(tab) {
+      const tabs = ['email', 'linkedin', 'phone', 'audit'];
+      tabs.forEach(t => {
+        const btn = document.getElementById('mTab' + capitalize(t));
+        const content = document.getElementById('mContent' + capitalize(t));
+        if (t === tab) {
+          btn.className = "pb-2.5 border-b-2 border-emerald-500 text-emerald-400 flex items-center";
+          content.classList.remove('hidden');
+        } else {
+          btn.className = "pb-2.5 border-b-2 border-transparent text-slate-400 hover:text-slate-200 flex items-center";
+          content.classList.add('hidden');
+        }
+      });
+      lucide.createIcons();
+    }
+
+    // Clipboard Copy Helper
+    function copyToClipboard(elementId) {
+      const el = document.getElementById(elementId);
+      const text = el.innerText || el.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("Copied to clipboard!");
+      });
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').textContent = msg;
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 2500);
+    }
+
+    // Download JSON
+    function downloadCampaignJson() {
+      if (!currentCampaign) return;
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentCampaign, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `Campaign_${currentCampaign.clinic_id || 'lead'}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    // Live Scraper Simulation / Execution
+    async function runLiveScrape(type) {
+      const url = document.getElementById('scrapeUrlInput').value.trim();
+      const rawText = document.getElementById('scrapeTextInput').value.trim();
+      const resultBox = document.getElementById('scrapeResultBox');
+      const resultJson = document.getElementById('scrapeResultJson');
+
+      const payload = type === 'url' ? { url: url } : { raw_text: rawText };
+      if (!url && !rawText) {
+        alert("Please enter a URL or paste clinic text.");
+        return;
+      }
+
+      const btn = type === 'url' ? document.getElementById('btnScrapeUrl') : document.getElementById('btnScrapeText');
+      const origText = btn.innerHTML;
+      btn.innerHTML = `<i data-lucide="loader" class="w-4 h-4 mr-2 animate-spin"></i> Extracting...`;
+      lucide.createIcons();
+
+      try {
+        const res = await fetch('/api/scrape-extract', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        btn.innerHTML = origText;
+        lucide.createIcons();
+
+        if (data.success) {
+          resultBox.classList.remove('hidden');
+          resultJson.textContent = JSON.stringify(data.extracted_clinic, null, 2);
+          fetchStats();
+          fetchClinics();
+          showToast("Lead extracted and added to directory!");
+        } else {
+          alert("Extraction error: " + (data.error || 'Failed'));
+        }
+      } catch (e) {
+        btn.innerHTML = origText;
+        lucide.createIcons();
+        alert("Extraction failed: " + e.message);
+      }
+    }
+
+    function loadSampleText() {
+      document.getElementById('scrapeTextInput').value = `Dr. Amanda Chen MBBS, FRACGP & Dr. Michael Davies
+North Sydney Family Practice & Specialist Clinic
+Located at Suite 3, 105 Walker Street, North Sydney NSW 2060
+Phone: (02) 9955 7711 | Fax: (02) 9955 7712
+Email: reception@northsydneyfamilypractice.com.au
+Our modern practice offers comprehensive care, preventative health assessments, and telehealth video consults.
+Bookings are available online via HotDoc or call reception. Mixed billing clinic open Monday to Saturday.`;
+    }
+  </script>
+</body>
+</html>
